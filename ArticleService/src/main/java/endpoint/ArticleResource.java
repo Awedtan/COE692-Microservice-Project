@@ -16,6 +16,15 @@ public class ArticleResource {
     public ArticleResource() {
     }
 
+    @POST
+    @Path("create")
+    @Produces(MediaType.TEXT_HTML)
+    public boolean createArticle(@FormParam("uid") int uid, @FormParam("title") String title, @FormParam("content") String content) {
+        ArticleBusiness ab = new ArticleBusiness();
+        boolean response = ab.insertArticle(uid, title, content);
+        return response;
+    }
+
     @GET
     @Path("public")
     @Produces(MediaType.APPLICATION_XML + ";charset=utf-8")

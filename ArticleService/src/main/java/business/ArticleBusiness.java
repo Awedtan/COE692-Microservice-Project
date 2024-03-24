@@ -5,8 +5,13 @@ import java.util.ArrayList;
 import helper.*;
 
 public class ArticleBusiness {
+    public boolean insertArticle(int uid, String title, String content){
+        boolean response = ArticleCRUD.insertArticle(uid, title, content);
+        return response;
+    }
+
     public ArticlesXML getPublicArticles() {
-        ArrayList<Article> articles = ArticleCRUD.readPublicArticles();
+        ArrayList<Article> articles = ArticleCRUD.selectPublicArticles();
         ArticlesXML ax = new ArticlesXML();
         ax.setArticles(articles);
         return ax;
@@ -14,7 +19,7 @@ public class ArticleBusiness {
 
     public ArticlesXML getUserArticles(String query) {
         int uid = Integer.parseInt(query);
-        ArrayList<Article> articles = ArticleCRUD.readUserArticles(uid);
+        ArrayList<Article> articles = ArticleCRUD.selectUserArticles(uid);
         ArticlesXML ax = new ArticlesXML();
         ax.setArticles(articles);
         return ax;

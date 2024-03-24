@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import helper.*;
 
 public class ArticleCRUD {
-    public static boolean createArticle(int uid, String title, String content) {
+    public static boolean insertArticle(int uid, String title, String content) {
         try {
             Connection conn = Database.connect();
             String query = String.format(
@@ -20,7 +20,7 @@ public class ArticleCRUD {
         return false;
     }
 
-    public static ArrayList<Article> readPublicArticles() {
+    public static ArrayList<Article> selectPublicArticles() {
         ArrayList<Article> articles = new ArrayList<Article>();
         try {
             Connection conn = Database.connect();
@@ -38,7 +38,7 @@ public class ArticleCRUD {
         return articles;
     }
 
-    public static ArrayList<Article> readUserArticles(int uid) {
+    public static ArrayList<Article> selectUserArticles(int uid) {
         ArrayList<Article> articles = new ArrayList<Article>();
         try {
             Connection conn = Database.connect();
