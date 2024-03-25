@@ -8,7 +8,7 @@ public class Database {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/coe692_db?serverTimezone=UTC",
+                    "jdbc:mysql://localhost:3306/comment_db?serverTimezone=UTC",
                     "root", "student");
             System.out.println("Connected to the database.");
         } catch (Exception e) {
