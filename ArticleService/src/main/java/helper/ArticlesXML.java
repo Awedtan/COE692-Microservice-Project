@@ -13,8 +13,9 @@ public class ArticlesXML {
     public ArticlesXML() {
     }
 
-    public void setArticles(ArrayList<Article> articles) {
+    public ArticlesXML setArticles(ArrayList<Article> articles) {
         this.articles = articles;
+        return this;
     }
 
     public ArrayList<Article> getArticles() {

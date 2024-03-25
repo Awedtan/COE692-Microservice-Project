@@ -13,8 +13,9 @@ public class CommentsXML {
     public CommentsXML() {
     }
 
-    public void setComments(ArrayList<Comment> comments) {
+    public CommentsXML setComments(ArrayList<Comment> comments) {
         this.comments = comments;
+        return this;
     }
 
     public ArrayList<Comment> getComments() {

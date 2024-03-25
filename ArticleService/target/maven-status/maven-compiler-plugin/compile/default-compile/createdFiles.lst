@@ -1,2 +1,10 @@
+helper/Article.class
 helper/CommentsXML.class
 endpoint/ArticleResource.class
+endpoint/ApplicationConfig.class
+helper/Comment.class
+helper/User.class
+persistence/ArticleCRUD.class
+persistence/Database.class
+helper/ArticlesXML.class
+business/ArticleBusiness.class

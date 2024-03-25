@@ -1,0 +1,10 @@
+helper/Article.class
+frontend/Authenticate.class
+helper/CommentsXML.class
+persistence/UserCRUD.class
+helper/Comment.class
+helper/User.class
+persistence/Database.class
+frontend/API.class
+helper/ArticlesXML.class
+frontend/Frontend.class
