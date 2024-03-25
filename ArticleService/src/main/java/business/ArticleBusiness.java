@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import helper.*;
 
 public class ArticleBusiness {
-    public boolean insertArticle(int uid, String title, String content){
-        boolean response = ArticleCRUD.insertArticle(uid, title, content);
+    public boolean insertArticle(int uid, String title, String content, String token) {
+        boolean response = false;
+        if (Authenticate.verifyToken(token).getKey()) {
+            response = ArticleCRUD.insertArticle(uid, title, content);
+        }
         return response;
     }
 

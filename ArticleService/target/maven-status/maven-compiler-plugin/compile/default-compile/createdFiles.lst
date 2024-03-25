@@ -1,3 +1,4 @@
+business/Authenticate.class
 helper/Article.class
 helper/CommentsXML.class
 endpoint/ArticleResource.class

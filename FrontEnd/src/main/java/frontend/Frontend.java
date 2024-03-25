@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import business.API;
+import business.Authenticate;
 import helper.Article;
 import helper.ArticlesXML;
 import helper.Comment;
@@ -21,12 +23,6 @@ import helper.User;
 public class Frontend extends HttpServlet {
 
     private static String authCookieName = "auth_token";
-
-    private static Cookie createAuthCookie(User user) {
-        String token = Authenticate.createToken("login", Integer.toString(user.getUid()));
-        Cookie authCookie = new Cookie(authCookieName, token);
-        return authCookie;
-    }
 
     private static Entry<Boolean, Entry<String, String>> readAuthCookie(Cookie[] cookies) {
         Entry<Boolean, String> verify = Authenticate.verifyToken("");
@@ -57,7 +53,8 @@ public class Frontend extends HttpServlet {
                 User user = API.getUser(username, password);
 
                 if (user != null) {
-                    response.addCookie(createAuthCookie(user));
+                    String token = Authenticate.createToken("login", Integer.toString(user.getUid()));
+                    response.addCookie(new Cookie(authCookieName, token));
                     showHomepage(request, response, user);
                 } else {
                     showLogin(request, response);
@@ -91,7 +88,7 @@ public class Frontend extends HttpServlet {
                     String title = request.getParameter("title");
                     String content = request.getParameter("content");
 
-                    API.createArticle(user, title, content);
+                    API.createArticle(user, title, content, valid.getValue().getKey());
                     showHomepage(request, response, user);
                 } else {
                     showLogin(request, response);

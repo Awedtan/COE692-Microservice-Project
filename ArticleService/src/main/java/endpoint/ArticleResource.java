@@ -19,9 +19,10 @@ public class ArticleResource {
     @POST
     @Path("create")
     @Produces(MediaType.TEXT_HTML)
-    public boolean createArticle(@FormParam("uid") int uid, @FormParam("title") String title, @FormParam("content") String content) {
+    public boolean createArticle(@FormParam("uid") int uid, @FormParam("title") String title,
+            @FormParam("content") String content, @FormParam("token") String token) {
         ArticleBusiness ab = new ArticleBusiness();
-        boolean response = ab.insertArticle(uid, title, content);
+        boolean response = ab.insertArticle(uid, title, content, token);
         return response;
     }
 
