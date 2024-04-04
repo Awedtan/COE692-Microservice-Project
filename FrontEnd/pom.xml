@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.kubemq.sdk</groupId>
+            <artifactId>kubemq-sdk-Java</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>org.core4j</groupId>
             <artifactId>core4j</artifactId>
             <version>0.6</version>

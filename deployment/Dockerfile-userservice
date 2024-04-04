@@ -1,0 +1,5 @@
+FROM tomcat:8.5-jdk11-openjdk
+
+COPY UserService-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/UserService.war
+
+EXPOSE 8080

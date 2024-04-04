@@ -1,0 +1,25 @@
+sudo docker build . --file Dockerfile-articledb --tag awedtan/coe692-articledb && \
+sudo docker build . --file Dockerfile-articleservice --tag awedtan/coe692-articleservice && \
+sudo docker build . --file Dockerfile-commentdb --tag awedtan/coe692-commentdb && \
+sudo docker build . --file Dockerfile-commentservice --tag awedtan/coe692-commentservice && \
+sudo docker build . --file Dockerfile-userdb --tag awedtan/coe692-userdb && \
+sudo docker build . --file Dockerfile-userservice --tag awedtan/coe692-userservice && \
+sudo docker build . --file Dockerfile-frontend --tag awedtan/coe692-frontend
+
+sudo docker push awedtan/coe692-articledb && \
+sudo docker push awedtan/coe692-articleservice && \
+sudo docker push awedtan/coe692-commentdb && \
+sudo docker push awedtan/coe692-commentservice && \
+sudo docker push awedtan/coe692-userdb && \
+sudo docker push awedtan/coe692-userservice && \
+sudo docker push awedtan/coe692-frontend
+
+kubectl apply -f deployment.yaml
+kubectl delete -f deployment.yaml
+
+sudo docker system prune -a --volumes
+
+ARTICLE_URL
+COMMENT_URL
+USER_URL
+DB_URL

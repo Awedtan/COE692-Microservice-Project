@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: articledb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: articledb
+spec:
+  selector:
+    app: articledb
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articledb
+spec:
+  selector:
+    matchLabels:
+      app: articledb
+  template:
+    metadata:
+      labels:
+        app: articledb
+    spec:
+      containers:
+        - name: articledb
+          image: awedtan/coe692-articledb
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: storage
+              mountPath: /data/articledb
+          imagePullPolicy: Always
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: articledb-pvc

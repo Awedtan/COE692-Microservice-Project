@@ -18,8 +18,8 @@ import org.apache.commons.io.IOUtils;
 
 import helper.ArticlesXML;
 import helper.CommentsXML;
+import helper.UserXML;
 import helper.User;
-import persistence.UserCRUD;
 
 public class API {
     private static ArticlesXML xmlToArticles(String xml) {
@@ -44,10 +44,24 @@ public class API {
         return null;
     }
 
+    private static UserXML xmlToUser(String xml) {
+        try {
+            Unmarshaller ju = JAXBContext.newInstance(UserXML.class).createUnmarshaller();
+            UserXML user = (UserXML) ju.unmarshal(new StringReader(xml));
+            return user;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static CommentsXML getArticleComments(int uid) {
         try {
             Client c = ClientBuilder.newClient();
-            WebTarget t = c.target("http://localhost:8080/CommentService/api/article").path(Integer.toString(uid));
+            String dbUrl = System.getenv("COMMENT_URL");
+            String localUrl = "localhost:8080";
+            WebTarget t = c.target("http://" + dbUrl + "/CommentService/api/article")
+                    .path(Integer.toString(uid));
             InputStream is = t.request(MediaType.APPLICATION_XML).get(InputStream.class);
             String res = IOUtils.toString(is, "utf-8");
             CommentsXML comments = xmlToComments(res);
@@ -60,7 +74,9 @@ public class API {
 
     public static void createArticle(User user, String title, String content, String token) {
         Client c = ClientBuilder.newClient();
-        WebTarget t = c.target("http://localhost:8080/ArticleService/api/create");
+        String dbUrl = System.getenv("ARTICLE_URL");
+        String localUrl = "localhost:8080";
+        WebTarget t = c.target("http://" + dbUrl + "/ArticleService/api/create");
 
         Form form = new Form()
                 .param("uid", Integer.toString(user.getUid()))
@@ -74,7 +90,9 @@ public class API {
     public static ArticlesXML getPublicArticles() {
         try {
             Client c = ClientBuilder.newClient();
-            WebTarget t = c.target("http://localhost:8080/ArticleService/api/public");
+            String dbUrl = System.getenv("ARTICLE_URL");
+            String localUrl = "localhost:8080";
+            WebTarget t = c.target("http://" + dbUrl + "/ArticleService/api/public");
             InputStream is = t.request(MediaType.APPLICATION_XML).get(InputStream.class);
             String res = IOUtils.toString(is, "utf-8");
             ArticlesXML articles = xmlToArticles(res);
@@ -88,7 +106,9 @@ public class API {
     public static ArticlesXML getUserArticles(int uid) {
         try {
             Client c = ClientBuilder.newClient();
-            WebTarget t = c.target("http://localhost:8080/ArticleService/api/user").path(Integer.toString(uid));
+            String dbUrl = System.getenv("ARTICLE_URL");
+            String localUrl = "localhost:8080";
+            WebTarget t = c.target("http://" + dbUrl + "/ArticleService/api/user").path(Integer.toString(uid));
             InputStream is = t.request(MediaType.APPLICATION_XML).get(InputStream.class);
             String res = IOUtils.toString(is, "utf-8");
             ArticlesXML articles = xmlToArticles(res);
@@ -99,12 +119,36 @@ public class API {
         return null;
     }
 
-    public static User getUser(int uid) {
-        return UserCRUD.getUser(uid);
+    public static UserXML getUser(int uid) {
+        try {
+            Client c = ClientBuilder.newClient();
+            String dbUrl = System.getenv("USER_URL");
+            String localUrl = "localhost:8080";
+            WebTarget t = c.target("http://" + dbUrl + "/UserService/api/user").path(Integer.toString(uid));
+            InputStream is = t.request(MediaType.APPLICATION_XML).get(InputStream.class);
+            String res = IOUtils.toString(is, "utf-8");
+            UserXML user = xmlToUser(res);
+            return user;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static User getUser(String username, String password) {
-        return UserCRUD.getUser(username, password);
+    public static UserXML getUser(String username, String password) {
+        try {
+            Client c = ClientBuilder.newClient();
+            String dbUrl = System.getenv("USER_URL");
+            String localUrl = "localhost:8080";
+            WebTarget t = c.target("http://" + dbUrl + "/UserService/api/user").path(username).path(password);
+            InputStream is = t.request(MediaType.APPLICATION_XML).get(InputStream.class);
+            String res = IOUtils.toString(is, "utf-8");
+            UserXML user = xmlToUser(res);
+            return user;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

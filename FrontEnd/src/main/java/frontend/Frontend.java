@@ -50,7 +50,7 @@ public class Frontend extends HttpServlet {
             case "login": {
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
-                User user = API.getUser(username, password);
+                User user = API.getUser(username, password).getUser();
 
                 if (user != null) {
                     String token = Authenticate.createToken("login", Integer.toString(user.getUid()));
@@ -63,7 +63,7 @@ public class Frontend extends HttpServlet {
             }
             case "explore": {
                 Entry<Boolean, Entry<String, String>> valid = readAuthCookie(request.getCookies());
-                User user = API.getUser(Integer.parseInt(valid.getValue().getValue()));
+                User user = API.getUser(Integer.parseInt(valid.getValue().getValue())).getUser();
                 if (valid.getKey()) {
                     showExplore(request, response, user);
                 } else {
@@ -73,7 +73,7 @@ public class Frontend extends HttpServlet {
             }
             case "home": {
                 Entry<Boolean, Entry<String, String>> valid = readAuthCookie(request.getCookies());
-                User user = API.getUser(Integer.parseInt(valid.getValue().getValue()));
+                User user = API.getUser(Integer.parseInt(valid.getValue().getValue())).getUser();
                 if (valid.getKey()) {
                     showHomepage(request, response, user);
                 } else {
@@ -84,7 +84,7 @@ public class Frontend extends HttpServlet {
             case "createarticle": {
                 Entry<Boolean, Entry<String, String>> valid = readAuthCookie(request.getCookies());
                 if (valid.getKey()) {
-                    User user = API.getUser(Integer.parseInt(valid.getValue().getValue()));
+                    User user = API.getUser(Integer.parseInt(valid.getValue().getValue())).getUser();
                     String title = request.getParameter("title");
                     String content = request.getParameter("content");
 

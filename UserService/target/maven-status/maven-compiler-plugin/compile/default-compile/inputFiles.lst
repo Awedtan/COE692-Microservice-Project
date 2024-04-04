@@ -1,0 +1,11 @@
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/persistence/Database.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/business/UserBusiness.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/endpoint/ApplicationConfig.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/Comment.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/UserXML.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/persistence/UserCRUD.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/ArticlesXML.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/CommentsXML.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/endpoint/UserResource.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/Article.java
+/home/student/Documents/Lab5/COE692-Microservice-Project/UserService/src/main/java/helper/User.java

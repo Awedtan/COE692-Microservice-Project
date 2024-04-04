@@ -1,10 +1,9 @@
 business/Authenticate.class
 helper/Article.class
 helper/CommentsXML.class
-persistence/UserCRUD.class
 helper/Comment.class
 helper/User.class
-persistence/Database.class
 business/API.class
 helper/ArticlesXML.class
 frontend/Frontend.class
+helper/UserXML.class

@@ -7,8 +7,10 @@ public class Database {
         Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbUrl = System.getenv("DB_URL");
+            String localUrl = "localhost:3306";
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/comment_db?serverTimezone=UTC",
+                    "jdbc:mysql://" + dbUrl + "/comment_db?serverTimezone=UTC",
                     "root", "student");
             System.out.println("Connected to the database.");
         } catch (Exception e) {

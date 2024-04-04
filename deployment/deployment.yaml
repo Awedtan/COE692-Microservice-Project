@@ -1,0 +1,299 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: articledb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: articledb
+spec:
+  selector:
+    app: articledb
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articledb
+spec:
+  selector:
+    matchLabels:
+      app: articledb
+  template:
+    metadata:
+      labels:
+        app: articledb
+    spec:
+      containers:
+        - name: articledb
+          image: awedtan/coe692-articledb
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: storage
+              mountPath: /data/articledb
+          imagePullPolicy: Always
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: articledb-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: commentdb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: commentdb
+spec:
+  selector:
+    app: commentdb
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commentdb
+spec:
+  selector:
+    matchLabels:
+      app: commentdb
+  template:
+    metadata:
+      labels:
+        app: commentdb
+    spec:
+      containers:
+        - name: commentdb
+          image: awedtan/coe692-commentdb
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: storage
+              mountPath: /data/commentdb
+          imagePullPolicy: Always
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: commentdb-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: userdb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userdb
+spec:
+  selector:
+    app: userdb
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userdb
+spec:
+  selector:
+    matchLabels:
+      app: userdb
+  template:
+    metadata:
+      labels:
+        app: userdb
+    spec:
+      containers:
+        - name: userdb
+          image: awedtan/coe692-userdb
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: storage
+              mountPath: /data/userdb
+          imagePullPolicy: Always
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: userdb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: articleservice
+spec:
+  selector:
+    app: articleservice
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articleservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: articleservice
+  template:
+    metadata:
+      labels:
+        app: articleservice
+    spec:
+      containers:
+        - name: articleservice
+          image: awedtan/coe692-articleservice
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: articledb:3306
+            - name: KMQ_ADDRESS
+              value: 10.63.2.185:50000
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: commentservice
+spec:
+  selector:
+    app: commentservice
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commentservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: commentservice
+  template:
+    metadata:
+      labels:
+        app: commentservice
+    spec:
+      containers:
+        - name: commentservice
+          image: awedtan/coe692-commentservice
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: commentdb:3306
+            - name: KMQ_ADDRESS
+              value: 10.63.2.185:50000
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice
+spec:
+  selector:
+    app: userservice
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+        - name: userservice
+          image: awedtan/coe692-userservice
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: userdb:3306
+            - name: KMQ_ADDRESS
+              value: 10.63.2.185:50000
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: awedtan/coe692-frontend
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ARTICLE_URL
+              value: articleservice:80
+            - name: COMMENT_URL
+              value: commentservice:80
+            - name: USER_URL
+              value: userservice:80
+            - name: KMQ_ADDRESS
+              value: 10.63.2.185:50000
+          imagePullPolicy: Always
