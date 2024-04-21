@@ -14,12 +14,22 @@ sudo docker push awedtan/coe692-userdb && \
 sudo docker push awedtan/coe692-userservice && \
 sudo docker push awedtan/coe692-frontend
 
-kubectl apply -f deployment.yaml
-kubectl delete -f deployment.yaml
+gcloud init
+gcloud auth login
+gcloud container clusters create lab5-cluster --num-nodes=3
+gcloud container clusters get-credentials lab5-cluster --zone=northamerica-northeast1-a
 
+kubectl apply -f https://deploy.kubemq.io/init
+kubectl apply -f https://deploy.kubemq.io/key/4dac6f4f-53bd-48a7-aca6-bcba0083fc44
+sudo curl -sL https://get.kubemq.io/install | sudo bash
+kubemqctl get cluster describe
+  grpc: 'ClusterIP: 10.64.84.150:50000'
+  
+sudo dockerd
+sudo docker login
 sudo docker system prune -a --volumes
 
-ARTICLE_URL
-COMMENT_URL
-USER_URL
-DB_URL
+kubectl apply -f deployment.yaml
+kubectl delete -f deployment.yaml
+kubectl get pods
+kubectl get services

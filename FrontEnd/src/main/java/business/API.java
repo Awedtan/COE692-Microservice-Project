@@ -73,18 +73,21 @@ public class API {
     }
 
     public static void createArticle(User user, String title, String content, String token) {
-        Client c = ClientBuilder.newClient();
-        String dbUrl = System.getenv("ARTICLE_URL");
-        String localUrl = "localhost:8080";
-        WebTarget t = c.target("http://" + dbUrl + "/ArticleService/api/create");
+        // Client c = ClientBuilder.newClient();
+        // String dbUrl = System.getenv("ARTICLE_URL");
+        // String localUrl = "localhost:8080";
+        // WebTarget t = c.target("http://" + dbUrl + "/ArticleService/api/create");
 
-        Form form = new Form()
-                .param("uid", Integer.toString(user.getUid()))
-                .param("title", title)
-                .param("content", content)
-                .param("token", token);
+        // Form form = new Form()
+        //         .param("uid", Integer.toString(user.getUid()))
+        //         .param("title", title)
+        //         .param("content", content)
+        //         .param("token", token);
 
-        t.request().post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
+        // t.request().post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
+
+        // deliminator = ';'
+        Messaging.sendMessage("CREATE;" + Integer.toString(user.getUid()) + ";" + title + ";" + content + ";" + token);
     }
 
     public static ArticlesXML getPublicArticles() {
